@@ -3,6 +3,7 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
+use extism::*;
 use serde::{Deserialize, Serialize};
 
 #[tokio::main]
@@ -23,8 +24,12 @@ async fn main() {
 }
 
 // basic handler that responds with a static string
-async fn root() -> &'static str {
-    "Hello, World!"
+async fn root() -> String {
+    let url = Wasm::file("target/wasm32-unknown-unknown/debug/hello_plugin.wasm");
+    let manifest = Manifest::new([url]);
+    let mut plugin = Plugin::new(&manifest, [], true).unwrap();
+    let res = plugin.call::<&str, &str>("greet", "extism").unwrap();
+    res.to_owned()
 }
 
 async fn create_user(

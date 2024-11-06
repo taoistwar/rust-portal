@@ -5,3 +5,4 @@
 ## Roadmap
 
 - [x] Axum "Hello World"
+- [x] Extism "Hello World"
