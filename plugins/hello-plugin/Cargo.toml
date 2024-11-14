@@ -10,3 +10,6 @@ crate-type = ["cdylib"]
 plugin-common = { path = "../../commons/plugin-common" }
 extism-pdk = "1.3.0"
 serde = { version = "1", features = ["derive"] }
+
+[dev-dependencies]
+plugin-mock = { path = "../../commons/plugin-mock" }
