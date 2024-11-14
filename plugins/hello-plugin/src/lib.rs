@@ -1,28 +1,22 @@
 use extism_pdk::*;
-use serde::{Deserialize, Serialize};
+use plugin_common::PluginArgs;
 
-// start with something simple
-#[plugin_fn]
-pub fn greet(name: String) -> FnResult<String> {
-    Ok(format!("Hello, {}!", name))
-}
-
-// use json data for inputs and outputs
-#[derive(FromBytes, Deserialize, PartialEq, Debug)]
-#[encoding(Json)]
-struct Add {
-    left: i32,
-    right: i32,
-}
-#[derive(ToBytes, Serialize, PartialEq, Debug)]
-#[encoding(Json)]
-struct Sum {
-    value: i32,
+#[host_fn("extism:host/user")]
+extern "ExtismHost" {
+    fn kv_read(key: String) -> i64;
+    fn kv_write(key: String, v: i64) -> Option<i64>;
 }
 
 #[plugin_fn]
-pub fn add(input: Add) -> FnResult<Sum> {
-    Ok(Sum {
-        value: input.left + input.right,
-    })
+pub fn process(input: PluginArgs) -> FnResult<String> {
+    let key = "hello".to_string();
+    let old = unsafe { kv_read(key.clone())? };
+
+    let new = old + 1;
+    unsafe {
+        kv_write(key, new)?;
+    }
+    config::get("key")?;
+    let res = format!("input: {:?}\n<br/>\n value:{}, {}", input, old, new);
+    Ok(res)
 }

@@ -1,12 +1,9 @@
 [package]
-name = "hello-plugin"
+name = "plugin-common"
 version = "0.1.0"
 edition = "2021"
 
-[lib]
-crate-type = ["cdylib"]
-
 [dependencies]
-plugin-common = { path = "../../commons/plugin-common" }
 extism-pdk = "1.3.0"
 serde = { version = "1", features = ["derive"] }
+anyhow = "1.0"
