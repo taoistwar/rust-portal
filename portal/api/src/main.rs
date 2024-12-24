@@ -1,10 +1,11 @@
+#[macro_use]
+extern crate lazy_static;
+
 use axum::{
     http::StatusCode,
     routing::{get, post},
     Json, Router,
 };
-#[macro_use]
-extern crate lazy_static;
 use extism::*;
 use plugin_common::PluginArgs;
 use serde::{Deserialize, Serialize};
